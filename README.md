@@ -22,7 +22,7 @@ net.train(train_feature, train_label, val_feature, val_label, test_feature,test_
 **Example:**<br />
 Make sure the train_feature has only one data.<br />
 ```python
-  net.train(train_feature, train_label, val_feature, val_label, test_feature,test_label,n_iter=1, b_size=1, lamb=0.01,       momentum=False,test_weight=True)
+net.train(train_feature, train_label, val_feature, val_label, test_feature,test_label,n_iter=1, b_size=1, lamb=0.01,       momentum=False,test_weight=True)
 ```
 ## Contributors
 

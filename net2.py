@@ -4,6 +4,7 @@ from mnist import MNIST
 from matplotlib import pyplot as plt
 import random
 import time
+import math
 
 class NeuralNet:
     def __init__(self, layers, activation, lr):
@@ -18,7 +19,8 @@ class NeuralNet:
         self.delta = []
         for i in range(self.depth - 1):
             # avoid all-positive parameters
-            self.weights.append(np.random.rand(layers[i] + 1, layers[i + 1]) - 0.5)
+            #self.weights.append(np.random.rand(layers[i] + 1, layers[i + 1]) - 0.5) #this initialization is for Problem 3
+            self.weights.append(np.random.normal(0, 1.0/math.sqrt(layers[i]+1),(layers[i]+1)*layers[i+1]).reshape(layers[i] + 1, layers[i + 1]))
             self.delta.append(np.zeros((layers[i] + 1, layers[i+1])))
 
     def feedforward(self, data):

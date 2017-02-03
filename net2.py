@@ -101,11 +101,11 @@ class NeuralNet:
 
     def train(self, train_data, train_label, val_data, val_label, test_data, test_label,
               n_iter, b_size, lamb, momentum):
-        t = multi_label(train_label)
         train_acc = []
         valid_acc = []
         test_acc = []
         for i in range(n_iter):
+            t = multi_label(train_label)
             n_batch = len(train_data) / b_size
             for j in range(n_batch):
                 b_data = train_data[j * b_size:(j + 1) * b_size, :]
@@ -119,6 +119,10 @@ class NeuralNet:
             test_acc.append(self.predict(test_data, test_label))
             if n_iter == 20:
                 self.lr /= 2.0
+                idx = range(len(train_label))
+                random.shuffle(idx)
+                train_data = train_data[idx[:], :]
+                train_label = train_label[idx[:]]
             print(train_acc[-1], valid_acc[-1], test_acc[-1])
         print 'train accuracy: {}\t validation accuracy: {}\t test accuracy:{}'.format(train_acc[-1], valid_acc[-1], test_acc[-1])
         plt.figure(2)
@@ -156,12 +160,10 @@ def main():
     train_label = np.array(data[1])
     test_label = np.array(test[1])
     # print(test_label)
-    idx = range(60000)
-    random.shuffle(idx)
-    val_feature = train_feature[idx[50000:60000], :]
-    val_label = train_label[idx[50000:60000]]
-    train_feature = train_feature[idx[:50000], :]
-    train_label = train_label[idx[:50000]]
+    val_feature = train_feature[50000:60000, :]
+    val_label = train_label[50000:60000]
+    train_feature = train_feature[:50000, :]
+    train_label = train_label[:50000]
     net = NeuralNet([784, 800, 10], 'tanh', 0.01)
     train_acc, val_acc, test_acc = net.train(train_feature, train_label, val_feature, val_label, test_feature, test_label,
                                              n_iter=200, b_size=128, lamb=0.01, momentum=1)
